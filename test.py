@@ -41,7 +41,7 @@ def start(r1,r2, n=2):
         c.add_object(e, 2)
     
     
-    #c.plot()
+    c.plot()
     c.animate()
 
 start(0.1,0.1)
