@@ -34,8 +34,6 @@ class Object:
 
 class Collision:    
     def __init__(self,t):
-        #self.objects = [] 678767
-        # self.s_objects = []
         self.t  = [0]
         self.t_uk = t 
         self.dt = 0.01
@@ -63,14 +61,13 @@ class Collision:
         j = self.objects2[0]
         #print(i.x[-1],j.x[-1])
         #print(self.objects)
-        if  np.sqrt((i.x[-1] - j.x[-1])**2 + (i.y[-1] - j.y[-1])**2) <= i.r[0] + j.r[0] and i.y[-1] == j.y[-1]:
+        if  np.sqrt((i.x[-1] - j.x[-1])**2 + (i.y[-1] - j.y[-1])**2) <= i.r[0] + j.r[0] and i.y[-1] == j.y[-1]:  #centralni sudar
             v2i = -(2*j.m[0]*j.vx[-1]+(i.m[0]-j.m[0])*i.vx[-1])/(i.m[0]+j.m[0])
             v2j = -(2*i.m[0]*i.vx[-1]-(i.m[0]+j.m[0])*j.vx[-1])/(i.m[0]+j.m[0])
             i.vx.append(v2i)
             j.vx.append(v2j)
 
-        if np.sqrt((i.x[-1] - j.x[-1])**2 + (i.y[-1] - j.y[-1])**2) <= i.r[0] + j.r[0]:
-            #print('da')
+        if np.sqrt((i.x[-1] - j.x[-1])**2 + (i.y[-1] - j.y[-1])**2) <= i.r[0] + j.r[0]:   #ne-centralni sudar
             self.tsudar.append(self.t[-1])
             self.__angle()
             i.r.append(i.r[0]/3)
@@ -134,7 +131,7 @@ class Collision:
             tgt = np.tan(theta)*((2*j.m[0]/(e.m[0]+j.m[0]))/((np.tan(theta))**2 + ((e.m[0]-j.m[0])/(e.m[0]+j.m[0]))))
             tht2 = np.arctan(tgt)
             e.kut.append(tht2*180/np.pi)
-            j.kut.append(np.pi-2*theta*180/np.pi)   ####prominila iz - u + ali zasto tad radi???
+            j.kut.append(np.pi-2*theta*180/np.pi)  
 
         for e in self.objects2:
             a = (self.yi[0]-e.y[-1])/(self.xi[0]-e.x[-1])
