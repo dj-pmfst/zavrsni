@@ -22,7 +22,7 @@ def start(r1,r2, n=2):
     y = np.random.normal(sr, st_dev)
     #print(y)
     b = s.Object() 
-    b.set_initial_conditions(-1, 1.5, 0.07, 0, r2, 0.5, 'red')
+    b.set_initial_conditions(-1, 1.5, y, 0, r2, 0.5, 'red')
     
     c = s.Collision(5)
     c.add_object(a, 1)
@@ -37,7 +37,7 @@ def start(r1,r2, n=2):
         c.add_object(d, 1)
         r = r2/(n+1)
         e = s.Object()
-        e.set_initial_conditions(-1, xx[i], yy[i]+0.07, 0, r, 0.25, 'red')
+        e.set_initial_conditions(-1, xx[i], yy[i]+y, 0, r, 0.25, 'red')
         c.add_object(e, 2)
     
     
