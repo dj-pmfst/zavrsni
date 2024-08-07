@@ -123,8 +123,8 @@ class Collision:
             a = (e.y[-1]-self.yj[0])/(e.x[-1]-self.xj[0])
             #print(e.x[0],self.xj[0])
             xt = self.xj[0] + j.r[0]/(np.sqrt( 1 + a**2))
-            yt = (xt - self.xj[0])*a + self.yj[0]
-            xs = 1 + yt*((yt - e.y[-1])/(xt - e.x[-1]))
+            #yt = (xt - self.xj[0])*a + self.yj[0]
+            #xs = 1 + yt*((yt - e.y[-1])/(xt - e.x[-1]))
             theta = math.acos(e.r[-1]/abs(e.x[-1]-xt))
             # i.kut.append(np.pi - 2*(theta*180/np.pi))
             # j.kut.append(np.pi - 2*(theta*180/np.pi))
@@ -137,8 +137,8 @@ class Collision:
             a = (self.yi[0]-e.y[-1])/(self.xi[0]-e.x[-1])
             #print(self.xi[0],e.x[0])
             xt = e.x[-1] + e.r[0]/(np.sqrt( 1 + a**2))
-            yt = (xt - e.x[-1])*a + e.y[-1]
-            xs = 1 + yt*((yt - e.y[-1])/(xt - self.xi[0]))
+            #yt = (xt - e.x[-1])*a + e.y[-1]
+            #xs = 1 + yt*((yt - e.y[-1])/(xt - self.xi[0]))
             theta = math.acos(i.r[0]/abs(self.xi[0]-xt))
             # i.kut.append(np.pi - 2*(theta*180/np.pi))
             # j.kut.append(np.pi - 2*(theta*180/np.pi))
