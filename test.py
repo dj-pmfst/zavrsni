@@ -49,7 +49,7 @@ def start(r1,r2, n=2):
     
     
     c.plot() '''plotanje putanje kuglica'''
-    c.animate() '''stvaranje gif-a sudara'''
+    #c.animate() '''stvaranje gif-a sudara'''
 
 start(0.15,0.15)
 
