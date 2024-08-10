@@ -52,9 +52,6 @@ class Collision:
 
        elif x == 2:
            self.objects2.append(objekt)
-    
-    # def add_objects(self,objekt):
-    #     self.s_objects.append(objekt)
 
     def __move(self):
         i = self.objects1[0]
@@ -91,18 +88,7 @@ class Collision:
 
         self.t.append(self.t[-1] - self.dt)
         self.tsudar.append(0)
-        # v2i = (i.v[-1]*(i.m-j.m)+2*j.m*j.v[-1])/(i.m+j.m)
-        # v2j = (j.v[-1]*(j.m-i.m)+2*i.m*i.v[-1])/(i.m+j.m)
-        # i.v.append(v2i) 
-        # j.v.append(v2j)
-        # else:
-    
-        #     i.t.append(i.t[-1] + i.dt)
-        #     i.x.append(i.x[-1] + i.vx[-1]*i.dt)
-        #     i.y.append(i.y[-1] + i.vy[-1]*i.dt)
-        #     i.vx.append(i.vx[-1] + i.a[-1]*i.dt)
-        #     i.vy.append(i.vy[-1] + i.a[-1]*i.dt)
-        #     i.a.append(0)
+
     
     def __angle(self):
         i = self.objects1[0]
@@ -163,8 +149,8 @@ class Collision:
         for o in self.objects2:
             objects.append(o)
         
-        print(self.objects1[0].vx[-1], self.objects1[0].vy[-1])
-        print(self.objects2[0].vx[-1], self.objects2[0].vy[-1])
+        print("konacna brzina:",self.objects1[0].vx[-1], self.objects1[0].vy[-1])
+        print("konacna brzina:",self.objects2[0].vx[-1], self.objects2[0].vy[-1])
 
         T = len(self.t)
         for o in objects:
