@@ -94,27 +94,30 @@ class Collision:
         i = self.objects1[0]
         j = self.objects2[0]
 
+        #spremanje koordinata u trenutku sudara
         self.xi.append(i.x[-1])
         self.yi.append(i.y[-1])
         self.xj.append(j.x[-1])
         self.yj.append(j.y[-1])
         #print(self.xi[0], self.xj[0])
 
+        #x koordinate u slucaju raspada
         for o in self.objects1:
             o.x[0] += self.xi[0]
         for o in self.objects2:
             o.x[0] += self.xj[0]
-        
+
+        #(prema 'matematika skica.pdf'):
         for e in self.objects1:
-            a = (e.y[-1]-self.yj[0])/(e.x[-1]-self.xj[0])
+            a = (e.y[-1]-self.yj[0])/(e.x[-1]-self.xj[0]) #nagib pravca koji prolazi kroz srediste obe kruznice
             #print(e.x[0],self.xj[0])
-            xt = self.xj[0] + j.r[0]/(np.sqrt( 1 + a**2))
+            xt = self.xj[0] + j.r[0]/(np.sqrt( 1 + a**2))  #x koordinata tocke gdje pravac okomit na onaj koji prolazi kroz sredista, presijeca kruznicu
             #yt = (xt - self.xj[0])*a + self.yj[0]
             #xs = 1 + yt*((yt - e.y[-1])/(xt - e.x[-1]))
-            theta = math.acos(e.r[-1]/abs(e.x[-1]-xt))
+            theta = math.acos(e.r[-1]/abs(e.x[-1]-xt))  #kut izmedu pravca koji prolazi kroz sredista i x osi
             # i.kut.append(np.pi - 2*(theta*180/np.pi))
             # j.kut.append(np.pi - 2*(theta*180/np.pi))
-            tgt = np.tan(theta)*((2*j.m[0]/(e.m[0]+j.m[0]))/((np.tan(theta))**2 + ((e.m[0]-j.m[0])/(e.m[0]+j.m[0]))))
+            tgt = np.tan(theta)*((2*j.m[0]/(e.m[0]+j.m[0]))/((np.tan(theta))**2 + ((e.m[0]-j.m[0])/(e.m[0]+j.m[0])))) #tangens kuta za ne centralni sudar 
             tht2 = np.arctan(tgt)
             e.kut.append(tht2*180/np.pi)
             j.kut.append(np.pi-2*theta*180/np.pi)  
