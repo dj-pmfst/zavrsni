@@ -44,6 +44,8 @@ class Collision:
         self.objects1 = []  #lijevi
         self.objects2 = []  #desni
         self.tsudar = []
+        self.sudar_test = 0 #dogada se da kod detektira sudar vise od jednog puta zbog cega bi se svaki put racunao novi kut, 
+#a time i mijenjala brzina pa sam dodala ovaj uvjet da se brzina promjeni samo jednom s obzirom na kut dobiven iz prvog detektiranog sudara
 
     def add_object(self, objekt, x):
        # self.objects.append(objekt)
@@ -58,32 +60,51 @@ class Collision:
         j = self.objects2[0]
         #print(i.x[-1],j.x[-1])
         #print(self.objects)
+
         if  np.sqrt((i.x[-1] - j.x[-1])**2 + (i.y[-1] - j.y[-1])**2) <= i.r[0] + j.r[0] and i.y[-1] == j.y[-1]:  #centralni sudar
             v2i = -(2*j.m[0]*j.vx[-1]+(i.m[0]-j.m[0])*i.vx[-1])/(i.m[0]+j.m[0])
             v2j = -(2*i.m[0]*i.vx[-1]-(i.m[0]+j.m[0])*j.vx[-1])/(i.m[0]+j.m[0])
             i.vx.append(v2i)
             j.vx.append(v2j)
 
-        if np.sqrt((i.x[-1] - j.x[-1])**2 + (i.y[-1] - j.y[-1])**2) <= i.r[0] + j.r[0]:   #ne-centralni sudar
-            self.tsudar.append(self.t[-1])
-            self.__angle()
-            i.r.append(i.r[0]/3)
-            j.r.append(j.r[0]/3)
+        elif np.sqrt((i.x[-1] - j.x[-1])**2 + (i.y[-1] - j.y[-1])**2) <= i.r[0] + j.r[0]:   #ne-centralni sudar
+            if self.sudar_test == 0:
+                self.tsudar.append(self.t[-1])
+                self.__angle()
+                i.r.append(i.r[0]/3)
+                j.r.append(j.r[0]/3)
+                self.sudar_test += 1
+            else:
+                pass
+
+        if self.sudar_test == 1:
+            for o in self.objects1:
+                o.vx.append(o.v0 * np.cos(o.kut[-1] ))
+                o.vy.append(o.v0 * np.sin(o.kut[-1] ))
+            
+            for o in self.objects2:
+                o.vx.append(o.v0 * np.cos(o.kut[-1] ))
+                o.vy.append(o.v0 * np.sin(o.kut[-1] ))
+        
+        elif self.sudar_test != 1:
+            for o in self.objects1:
+                o.vx.append(o.vx[-1])
+                o.vy.append(o.vy[-1])
+            
+            for o in self.objects2:
+                o.vx.append(o.vx[-1])
+                o.vy.append(o.vy[-1])
 
         for o in self.objects1:
             o.t.append(o.t[-1] + o.dt)
             o.x.append(o.x[-1] + o.vx[-1]*o.dt)
             o.y.append(o.y[-1] + o.vy[-1]*o.dt)
-            o.vx.append(o.v0 * np.cos(o.kut[-1] ))
-            o.vy.append(o.v0 * np.sin(o.kut[-1] ))
             o.a.append(0)
         
         for o in self.objects2:
             o.t.append(o.t[-1] + o.dt)
             o.x.append(o.x[-1] + o.vx[-1]*o.dt)
             o.y.append(o.y[-1] + o.vy[-1]*o.dt)
-            o.vx.append(o.v0 * np.cos(o.kut[-1] ))
-            o.vy.append(o.v0 * np.sin(o.kut[-1] ))
             o.a.append(0)
 
         self.t.append(self.t[-1] - self.dt)
@@ -119,8 +140,8 @@ class Collision:
             # j.kut.append(np.pi - 2*(theta*180/np.pi))
             tgt = np.tan(theta)*((2*j.m[0]/(e.m[0]+j.m[0]))/((np.tan(theta))**2 + ((e.m[0]-j.m[0])/(e.m[0]+j.m[0])))) #tangens kuta za ne centralni sudar 
             tht2 = np.arctan(tgt)
-            e.kut.append(tht2*180/np.pi)
-            j.kut.append(np.pi-2*theta*180/np.pi)  
+            e.kut.append(tht2)
+            #j.kut.append(np.pi-2*theta)  
 
         for e in self.objects2:
             a = (self.yi[0]-e.y[-1])/(self.xi[0]-e.x[-1])
@@ -133,8 +154,8 @@ class Collision:
             # j.kut.append(np.pi - 2*(theta*180/np.pi))
             tgt = np.tan(theta)*((2*e.m[0]/(i.m[0]+e.m[0]))/((np.tan(theta))**2 + ((i.m[0]-e.m[0])/(i.m[0]+e.m[0]))))
             tht2 = np.arctan(tgt)
-            i.kut.append(tht2*180/np.pi)
-            e.kut.append(np.pi-2*theta*180/np.pi)   
+            #i.kut.append(tht2)
+            e.kut.append(np.pi-2*theta)   
 
     
     def plot(self):
@@ -154,6 +175,8 @@ class Collision:
         
         print("konacna brzina:",self.objects1[0].vx[-1], self.objects1[0].vy[-1])
         print("konacna brzina:",self.objects2[0].vx[-1], self.objects2[0].vy[-1])
+        # print("kut:",self.objects1[0].vx)
+        # print("kut:",self.objects2[0].vx)
 
         T = len(self.t)
         for o in objects:
@@ -235,4 +258,3 @@ class Collision:
                         #plt.scatter(o.x[i], o.y[i], color=o.c[0])
                         # plt.scatter(x[i], y[i], s = 20000/8)
                     writer.grab_frame()
-    
